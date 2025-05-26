@@ -1,0 +1,192 @@
+body {
+  font-family: 'Noto Sans', sans-serif;
+}
+
+
+.footer .icon-link {
+    font-size: 25px;
+    color: #000;
+}
+
+.link-block a {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.dnerf {
+  font-variant: small-caps;
+}
+
+
+.teaser .hero-body {
+  padding-top: 0;
+  padding-bottom: 3rem;
+}
+
+.teaser {
+  font-family: 'Google Sans', sans-serif;
+}
+
+
+.publication-title {
+}
+
+.publication-banner {
+  max-height: parent;
+
+}
+
+.publication-banner video {
+  position: relative;
+  left: auto;
+  top: auto;
+  transform: none;
+  object-fit: fit;
+}
+
+.publication-header .hero-body {
+}
+
+.publication-title {
+    font-family: 'Google Sans', sans-serif;
+}
+
+.publication-authors {
+    font-family: 'Google Sans', sans-serif;
+}
+
+.publication-venue {
+    color: #555;
+    width: fit-content;
+    font-weight: bold;
+}
+
+.publication-awards {
+    color: #ff3860;
+    width: fit-content;
+    font-weight: bolder;
+}
+
+.publication-authors {
+}
+
+.publication-authors a {
+   color: hsl(204, 86%, 53%) !important;
+}
+
+.publication-authors a:hover {
+    text-decoration: underline;
+}
+
+.author-block {
+  display: inline-block;
+}
+
+.publication-banner img {
+}
+
+.publication-authors {
+  /*color: #4286f4;*/
+}
+
+.publication-video {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+
+    overflow: hidden;
+    border-radius: 10px !important;
+}
+
+.publication-video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.publication-body img {
+}
+
+.results-carousel {
+  overflow: hidden;
+}
+
+.results-carousel .item {
+  margin: 5px;
+  overflow: hidden;
+  padding: 10px 5px 30px 0px;
+  font-size: 0;
+}
+
+.results-carousel video {
+  margin: 0;
+}
+
+.slider-pagination .slider-page {
+  background: #000000;
+}
+
+.eql-cntrb { 
+  font-size: smaller;
+}
+
+
+
+.animate-x-icon::before {
+  background-image: url(../images/animate-x-logo.png);
+  background-size: 1em 1em;
+  display: inline-block;
+  width: 1em; 
+  height: 0.9em;
+  content:"";
+}
+
+section.banner {
+  background-image: url(../images/overlay.png), url(../images/head.png);
+  color: #aaaaaa;
+  background-position: center top;
+  background-size: cover;
+  background-attachment: scroll;
+}
+
+
+.scaled-carousel {
+  width: 72%; /* Adjust overall scaling */
+  margin: 0 auto; /* Center the carousel */
+  transform: scale(0.72); /* Apply scaling to the entire carousel */
+  transform-origin: center; /* Keep scaling centered */
+}
+
+
+
+.scaled-carousel-tesear {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  width: 24.3%; /* Adjust overall scaling */
+  display: flex; /* 设置水平排列 */
+  gap: 10px; /* 视频之间的间距 */
+}
+
+.scaled-carousel-tesear video {
+  max-width: 100%; /* 防止超出父容器 */
+  height: auto; /* 保持视频比例 */
+}
+
+.handwriting-text {
+  font-size: 9px; /* 字体大小 */
+  line-height: 1.2; /* 紧凑的行间距 */
+  padding: 0px 0px 0px 5px;
+  width: 100.3%;
+  /* max-width: 100%; */
+  /* min-height: 150px; */
+  background-color: #fff;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  word-wrap: break-word; /* 防止文字溢出 */
+  white-space: pre-wrap; /* 保持文本中的换行 */
+}
+
