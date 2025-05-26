@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html>
+
+
+
+
+
+<head>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <meta charset="utf-8">
+
+  <meta property="og:title" content="VideoMAR: Autoregressive Video Generation with Continuous Tokens" />
+
+  <meta property="og:url" content="URL OF THE WEBSITE" />
+
+
+
+  <title>VideoMAR</title>
+
+  <script>
+    var x = window.innerWidth;
+    function resizeFresh() {
+      if (x != window.innerWidth)
+        location.reload();
+    }
+  </script>
+
+  <!-- <link rel="icon" type="image/x-icon" href="static/images/favicon.ico"> -->
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="static/images/x_icon.png">
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script src="static/js/bulma-carousel.js"></script>
+  <script src="static/js/bulma-slider.min.js"></script>
+  <script src="static/js/index.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> -->
+</head>
+
+<body>
+
+
+
+  <section class="hero banner">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title" style="display: flex; align-items: center;">
+              <!-- <i class="animate-x-icon" style="font-size: 180px; margin-right: 0px;"></i> -->
+              <span style="margin-left: 0px;">
+                <span style="color: rgb(116, 212, 223); font-weight: bold;font-size: 52px;">VideoMAR:</span>
+                <span style="color: white; font-weight: bold;  font-size: 52px;">Autoregressive Video
+                </span></br>
+                <span style="color: white; font-weight: bold;  font-size: 52px;"> Generation with Continuous Tokens
+                </span></br>
+                <!-- <span style="color: white; font-weight: bold;  font-size: 52px;">Motion Representation</span> -->
+
+              </span>
+            </h1>
+
+
+            <div class="is-size-5 publication-authors">
+              <!-- Paper authors -->
+              <span class="author-block"></span>
+              <a target="_blank">Submission ID: 2250</a>&thinsp; &thinsp; </span>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+  </section>
+
+
+
+  <!-- Teaser video-->
+  <!-- <section class="hero teaser">
+    <div class="hero-body">
+      <div class="container is-max-desktop" style="display: flex; justify-content: center; align-items: center; flex-direction: column; margin-top: 100px;">
+        <video poster="" id="tree" autoplay controls muted loop width="50%">
+          <source src="static\videos\teaser.mp4" type="video/mp4">
+        </video>
+        </h2>
+      </div>
+    </div>
+  </section> -->
+  <!-- End teaser video -->
+
+
+
+
+  <!-- Teaser video-->
+  <section class="hero teaser">
+    <div class="hero-body">
+      <div class="container is-max-desktop" style="margin-top: 30px;margin-bottom: -15px;">
+        <div class="container is-max-desktop is-centered has-text-centered" style="margin-top: 20px;margin-bottom: -3px;">
+          <h2 >VIDEO FRAMES</h2></div>
+        <img src="static\images\teaser.png" alt="MY ALT TEXT" />
+        <div class="container is-max-desktop is-centered has-text-centered" style="margin-top: 10px;margin-bottom: -10px;">
+        <div class="scaled-carousel-tesear">
+          <video poster="" id="video1" autoplay controls muted loop>
+            <!-- Your video file here -->
+            <source src="static\videos\i2v\1.mp4" type="video/mp4">
+          </video>
+          <video poster="" id="video2" autoplay controls muted loop>
+            <!-- Your video file here -->
+            <source src="static\videos\i2v\2.mp4" type="video/mp4">
+          </video>
+        
+          <video poster="" id="video3" autoplay controls muted loop>\
+            <!-- Your video file here -->
+            <source src="static\videos\i2v\3.mp4" type="video/mp4">
+          </video>
+      
+          <video poster="" id="video4" autoplay controls muted loop>\
+            <!-- Your video file here -->
+            <source src="static\videos\i2v\4.mp4" type="video/mp4">
+          </video>
+
+          <video poster="" id="video5" autoplay controls muted loop>\
+            <!-- Your video file here -->
+            <source src="static\videos\i2v\5.mp4" type="video/mp4">
+          </video>
+        </div>
+        <!-- <div class="handwriting-text">
+          <b>VIDEO 1:</b> A majestic eagle soars above a vast, snow-covered forest, its powerful wings cutting through the crisp winter air. Below, a dense canopy of evergreen trees is blanketed in pristine snow, creating a serene landscape.
+          <b>VIDEO 2:</b> A woman with short, curly silverhair in a red dress stands in a dimly lit, futuristic setting, looking to her left. Neon lights and digital screens fill the scene. By the end, she gazes away from the viewer against a neon cityscape, conveying mystery and anticipation.
+          <b>VIDEO 3:</b> The transformation from a flower bud to a fully blooming flower.
+          <b>VIDEO 4:</b> A vast, golden desert stretches endlessly under a brilliant blue sky in the early morning light. As the sun sets, the sky transforms into a canvas of vibrant oranges. Finally, the night falls, revealing a breathtaking canopy of stars, with the Milky Way arching gracefully over the tranquil.
+        </div> -->
+  
+      </div>
+  
+
+    </div>
+  </section>
+
+  <!-- End teaser video -->
+
+  <!-- Paper abstract -->
+  <section class="section hero is-light">
+    <div class="hero-body">
+      <div class="container is-max-desktop is-centered has-text-centered" style="margin-top: -50px;">
+        <!-- <div class="columns is-centered has-text-centered"> -->
+        <!-- <div class="column is-four-fifths"> -->
+          <!-- <img src="static\images\teaser.png" alt="MY ALT TEXT" /> -->
+        <h2 class="title is-3">Abstract</h2>
+        <!-- <h2 class="title is-3">Abstract</h2> -->
+        <div class="content has-text-justified">
+          <p>
+            Masked-based autoregressive models have demonstrated promising image generation capability in continuous space. 
+            However, their potential for video generation remains under-explored. 
+            In this paper, we propose \(\textbf{VideoMAR}\), a concise and efficient decoder-only autoregressive image-to-video model 
+            with continuous tokens, composing temporal frame-by-frame and spatial masked generation.
+            We first identify temporal causality and spatial bi-directionality as the first principle of video AR models, 
+            and propose the next-frame diffusion loss for the integration of mask and video generation.  
+            Besides, the huge cost and difficulty of long sequence autoregressive modeling is a basic but crucial issue. 
+            To this end, we propose the temporal short-to-long curriculum learning and spatial progressive resolution training, 
+            and employ progressive temperature strategy at inference time to mitigate the accumulation error. 
+            Furthermore, VideoMAR replicates several unique capacities of language models to video generation. 
+            It inherently bears high efficiency due to simultaneous temporal-wise KV cache and spatial-wise parallel generation, 
+            and presents the capacity of spatial and temporal extrapolation via 3D rotary embeddings.
+            On the VBench-I2V benchmark, VideoMAR surpasses the previous state-of-the-art (Cosmos I2V) while requiring 
+            significantly fewer parameters (9.3%), training data (0.5%), and GPU resources (0.2%).
+
+          </p>
+        </div>
+        <!-- </div> -->
+        <!-- </div> -->
+      </div>
+    </div>
+  </section>
+  <!-- End paper abstract -->
+
+
+
+  <!-- Image carousel -->
+  <section class="hero is-small">
+    <!-- <section class="hero is-light"> -->
+    <div class="hero-body">
+      <div class="container is-max-desktop is-centered has-text-centered" style="margin-top: 30px; margin-bottom: 30px;">
+        <h2 class="title is-3">Overall Framework of VideoMAR</h2>
+        <div class="item">
+          <!-- Your image here -->
+          <img src="static\images\method.png" alt="MY ALT TEXT" />
+          <h2 class="content has-text-justified">
+            Framework of VideoMAR. 
+            \(\textit{(a):}\) Training flowchart of VideoMAR. We employ frame-wise causal attention mask for temporal causality. 
+            Besides, we introduce the next-frame diffusion loss to the spatial partial-masked frame, which has complete previous frames. 
+            \(\textit{(b):}\) Efficient training of VideoMAR. We apply temporal short-to-long curriculum learning and 
+            spatial progressive-resolution for reducing the training difficulty and cost of VideoMAR.
+
+          </h2>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+  </section>
+  <!-- End image carousel -->
+
+
+
+
+
+
+
+  <!-- Video carousel -->
+  <!-- <section class="hero is-small is-light"> -->
+  <section class="hero is-small  is-light">
+    <div class="hero-body">
+      <h2 class="title is-3 has-text-centered " style="margin-top: 50px; margin-bottom: -20px;">Comparison with Cosmos</h2>
+
+      <div class="container is-centered has-text-centered  scaled-carousel" >
+        <!-- <div class="hero-body"> -->
+        <h2 class="title is-3">VideoMAR</h2>
+
+        <div id="results-carousel11" class="carousel results-carousel " data-bs-ride="carousel" data-interval="16000">
+          <div class="item item-video00">
+            <video poster="" id="video00" autoplay controls muted loop>
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\VideoMAR\1.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video01">
+            <video poster="" id="video01" autoplay controls muted loop>
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\VideoMAR\2.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video02">
+            <video poster="" id="video02" autoplay controls muted loop>
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\VideoMAR\3.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video1">
+            <video poster="" id="video1" autoplay controls muted loop>
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\VideoMAR\4.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video2">
+            <video poster="" id="video2" autoplay controls muted loop>
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\VideoMAR\5.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video3">
+            <video poster="" id="video3" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\VideoMAR\6.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video4">
+            <video poster="" id="video4" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\VideoMAR\7.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video5">
+            <video poster="" id="video5" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\VideoMAR\8.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video5">
+            <video poster="" id="video5" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\VideoMAR\9.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video5">
+            <video poster="" id="video5" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\VideoMAR\10.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video5">
+            <video poster="" id="video5" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\VideoMAR\11.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video5">
+            <video poster="" id="video5" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\VideoMAR\12.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video5">
+            <video poster="" id="video5" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\VideoMAR\13.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video5">
+            <video poster="" id="video5" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\VideoMAR\14.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video5">
+            <video poster="" id="video5" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\VideoMAR\15.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video5">
+            <video poster="" id="video5" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\VideoMAR\16.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video5">
+            <video poster="" id="video5" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\VideoMAR\17.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video5">
+            <video poster="" id="video5" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\VideoMAR\18.mp4" type="video/mp4">
+            </video>
+          </div>
+
+
+
+        </div>
+      </div>
+
+
+
+
+      <div class="container is-centered has-text-centered scaled-carousel" style="margin-top: -70px;">
+        <!-- <div class="hero-body"> -->
+        <h2 class="title is-3">Cosmos</h2>
+
+        <div id="results-carousel11" class="carousel results-carousel " data-bs-ride="carousel" data-interval="16000">
+          <div class="item item-video1">
+            <video poster="" id="video1" autoplay controls muted loop>
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\Cosmos\1.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video2">
+            <video poster="" id="video2" autoplay controls muted loop>
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\Cosmos\2.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video3">
+            <video poster="" id="video3" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\Cosmos\3.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video4">
+            <video poster="" id="video4" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\Cosmos\4.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video5">
+            <video poster="" id="video5" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\Cosmos\5.mp4" type="video/mp4">
+            </video>
+            <h5 class="title is-5">A shoe on the left side of a bowl.</h5>
+          </div>
+          <div class="item item-video6">
+            <video poster="" id="video6" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\Cosmos\6.mp4" type="video/mp4">
+            </video>
+            <h5 class="title is-5">A shoe on the right side of a bowl.</h5>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\Cosmos\7.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video8">
+            <video poster="" id="video8" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\Cosmos\8.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video9">
+            <video poster="" id="video9" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\Cosmos\9.mp4" type="video/mp4">
+            </video>
+            </h5>
+          </div>
+          <div class="item item-video10">
+            <video poster="" id="video10" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\Cosmos\10.mp4" type="video/mp4">
+            </video>
+            </h5>
+          </div>
+          <div class="item item-video11">
+            <video poster="" id="video11" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\Cosmos\11.mp4" type="video/mp4">
+            </video>
+            </h5>
+          </div>
+          <div class="item item-video12">
+            <video poster="" id="video12" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\Cosmos\12.mp4" type="video/mp4">
+            </video>
+            </h5>
+          </div>
+          <div class="item item-video12">
+            <video poster="" id="video12" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\Cosmos\13.mp4" type="video/mp4">
+            </video>
+            </h5>
+          </div>
+          <div class="item item-video12">
+            <video poster="" id="video12" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\Cosmos\14.mp4" type="video/mp4">
+            </video>
+            </h5>
+          </div>
+          <div class="item item-video12">
+            <video poster="" id="video12" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\Cosmos\15.mp4" type="video/mp4">
+            </video>
+            </h5>
+          </div>
+          <div class="item item-video12">
+            <video poster="" id="video12" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\Cosmos\16.mp4" type="video/mp4">
+            </video>
+            </h5>
+          </div>
+          <div class="item item-video12">
+            <video poster="" id="video12" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\Cosmos\17.mp4" type="video/mp4">
+            </video>
+            </h5>
+          </div>
+          <div class="item item-video12">
+            <video poster="" id="video12" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\comparison\Cosmos\18.mp4" type="video/mp4">
+            </video>
+            </h5>
+          </div>
+          
+        </div>
+      </div>
+
+
+
+    </div>
+  </section>
+  <!-- End video carousel -->
+
+
+
+
+
+  <!-- Video carousel -->
+
+  <!-- Video carousel -->
+  <!-- <section class="hero is-small is-light"> -->
+  <section class="hero  is-small">
+    <div class="hero-body">
+      <h2 class="title is-3 has-text-centered " style="margin-top: 50px; margin-bottom: -20px;">Extrapolation</h2>
+      <div class="container is-centered has-text-centered scaled-carousel">
+        <!-- <div class="hero-body"> -->
+        <h2 class="title is-3">Original (49x480x768)</h2>
+
+        <div id="results-carousel11" class="carousel results-carousel " data-bs-ride="carousel" data-interval="16000">
+          <div class="item item-video1">
+            <video poster="" id="video1" autoplay controls muted loop>
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\Original\1.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video2">
+            <video poster="" id="video2" autoplay controls muted loop>
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\Original\2.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video3">
+            <video poster="" id="video3" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\Original\3.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video4">
+            <video poster="" id="video4" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\Original\4.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video5">
+            <video poster="" id="video5" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\Original\5.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video6">
+            <video poster="" id="video6" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\Original\6.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\Original\7.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\Original\8.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\Original\9.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\Original\10.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\Original\11.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\Original\12.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\Original\13.mp4" type="video/mp4">
+            </video>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="container is-centered has-text-centered scaled-carousel"  style="margin-top: -100px;">
+        <!-- <div class="hero-body"> -->
+        <h2 class="title is-3">
+          Temporal (73x480x768)</h2>
+
+        <div id="results-carousel11" class="carousel results-carousel " data-bs-ride="carousel" data-interval="16000">
+          <div class="item item-video1">
+            <video poster="" id="video1" autoplay controls muted loop>
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\T\1.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video2">
+            <video poster="" id="video2" autoplay controls muted loop>
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\T\2.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video3">
+            <video poster="" id="video3" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\T\3.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video4">
+            <video poster="" id="video4" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\T\4.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video5">
+            <video poster="" id="video5" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\T\5.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video6">
+            <video poster="" id="video6" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\T\6.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\T\7.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\T\8.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\T\9.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\T\10.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\T\11.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\T\12.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\T\13.mp4" type="video/mp4">
+            </video>
+          </div>
+
+        </div>
+      </div>
+
+
+
+      <div class="container is-centered has-text-centered scaled-carousel"  style="margin-top: -100px;">
+        <!-- <div class="hero-body"> -->
+        <h2 class="title is-3">
+          Spatial (49x640x1024)</h2>
+
+        <div id="results-carousel11" class="carousel results-carousel " data-bs-ride="carousel" data-interval="16000">
+          <div class="item item-video1">
+            <video poster="" id="video1" autoplay controls muted loop>
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\S\1.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video2">
+            <video poster="" id="video2" autoplay controls muted loop>
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\S\2.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video3">
+            <video poster="" id="video3" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\S\3.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video4">
+            <video poster="" id="video4" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\S\4.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video5">
+            <video poster="" id="video5" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\S\5.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video6">
+            <video poster="" id="video6" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\S\6.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\S\7.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\S\8.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\S\9.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\S\10.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\S\11.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\S\12.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\S\13.mp4" type="video/mp4">
+            </video>
+          </div>
+
+        </div>
+      </div>
+
+
+
+      <div class="container is-centered has-text-centered scaled-carousel"  style="margin-top: -100px;">
+        <!-- <div class="hero-body"> -->
+        <h2 class="title is-3">
+          Spatial & Temporal (73x640x1024)</h2>
+
+        <div id="results-carousel11" class="carousel results-carousel " data-bs-ride="carousel" data-interval="16000">
+          <div class="item item-video1">
+            <video poster="" id="video1" autoplay controls muted loop>
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\ST\1.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video2">
+            <video poster="" id="video2" autoplay controls muted loop>
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\ST\2.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video3">
+            <video poster="" id="video3" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\ST\3.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video4">
+            <video poster="" id="video4" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\ST\4.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video5">
+            <video poster="" id="video5" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\ST\5.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video6">
+            <video poster="" id="video6" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\ST\6.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\ST\7.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\ST\8.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\ST\9.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\ST\10.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\ST\11.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\ST\12.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\extrapolation\ST\13.mp4" type="video/mp4">
+            </video>
+          </div>
+
+        </div>
+      </div>
+
+
+    </div>
+  </section>
+
+
+
+
+  <!-- Video carousel -->
+  <!-- <section class="hero is-small is-light"> -->
+  <section class="hero  is-small is-light">
+    <div class="hero-body">
+
+      <h2 class="title is-3 has-text-centered " style="margin-top: 50px; margin-bottom: -20px;">Video-to-video generation</h2>
+      <div class="container is-centered has-text-centered  scaled-carousel">
+        <!-- <div class="hero-body"> -->
+        <!-- <h2 class="title is-3">More interesting examples</h2> -->
+
+        <div id="results-carousel14" class="carousel results-carousel " data-bs-ride="carousel" data-interval="16000">
+          <div class="item item-video1">
+            <video poster="" id="video1" autoplay controls muted loop>
+              <!-- Your video file here -->
+              <source src="static\videos\v2v\1.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video2">
+            <video poster="" id="video2" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\v2v\2.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video3">
+            <video poster="" id="video3" autoplay controls muted loop>
+              <!-- Your video file here -->
+              <source src="static\videos\v2v\3.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video4">
+            <video poster="" id="video4" autoplay controls muted loop>
+              <!-- Your video file here -->
+              <source src="static\videos\v2v\4.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video5">
+            <video poster="" id="video5" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\v2v\5.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video6">
+            <video poster="" id="video6" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\v2v\6.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video7">
+            <video poster="" id="video7" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\v2v\7.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video8">
+            <video poster="" id="video8" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\v2v\8.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video9">
+            <video poster="" id="video9" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\v2v\9.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video10">
+            <video poster="" id="video10" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\v2v\10.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video11">
+            <video poster="" id="video11" autoplay controls muted loop>
+              <!-- Your video file here -->
+              <source src="static\videos\v2v\11.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video12">
+            <video poster="" id="video12" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\v2v\12.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video13">
+            <video poster="" id="video13" autoplay controls muted loop>
+              <!-- Your video file here -->
+              <source src="static\videos\v2v\13.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video14">
+            <video poster="" id="video14" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\v2v\14.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-video15">
+            <video poster="" id="video15" autoplay controls muted loop>\
+              <!-- Your video file here -->
+              <source src="static\videos\v2v\15.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End video carousel -->
+
+
+
+  <!-- Video carousel -->
+  <!-- <section class="hero is-small is-light"> -->
+    <section class="hero  is-small">
+      <div class="hero-body">
+        <h2 class="title is-3 has-text-centered " style="margin-top: 50px; margin-bottom: -20px;">Total mask VS Temporal autoregressive</h2>
+  
+        <div class="container is-centered has-text-centered  scaled-carousel" >
+          <!-- <div class="hero-body"> -->
+          <h2 class="title is-3">Total mask</h2>
+  
+          <div id="results-carousel11" class="carousel results-carousel " data-bs-ride="carousel" data-interval="16000">
+            <div class="item item-video00">
+              <video poster="" id="video00" autoplay controls muted loop>
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Total\1.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video01">
+              <video poster="" id="video01" autoplay controls muted loop>
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Total\2.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video02">
+              <video poster="" id="video02" autoplay controls muted loop>
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Total\3.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video1">
+              <video poster="" id="video1" autoplay controls muted loop>
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Total\4.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video2">
+              <video poster="" id="video2" autoplay controls muted loop>
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Total\5.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video3">
+              <video poster="" id="video3" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Total\6.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video4">
+              <video poster="" id="video4" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Total\7.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video5">
+              <video poster="" id="video5" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Total\8.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video5">
+              <video poster="" id="video5" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Total\9.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video5">
+              <video poster="" id="video5" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Total\10.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video5">
+              <video poster="" id="video5" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Total\11.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video5">
+              <video poster="" id="video5" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Total\12.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video5">
+              <video poster="" id="video5" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Total\13.mp4" type="video/mp4">
+              </video>
+            </div>
+
+          </div>
+        </div>
+  
+  
+        <div class="container is-centered has-text-centered  scaled-carousel" >
+          <!-- <div class="hero-body"> -->
+          <h2 class="title is-3">Temporal autoregressive</h2>
+  
+          <div id="results-carousel11" class="carousel results-carousel " data-bs-ride="carousel" data-interval="16000">
+            <div class="item item-video00">
+              <video poster="" id="video00" autoplay controls muted loop>
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Causal\1.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video01">
+              <video poster="" id="video01" autoplay controls muted loop>
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Causal\2.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video02">
+              <video poster="" id="video02" autoplay controls muted loop>
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Causal\3.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video1">
+              <video poster="" id="video1" autoplay controls muted loop>
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Causal\4.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video2">
+              <video poster="" id="video2" autoplay controls muted loop>
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Causal\5.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video3">
+              <video poster="" id="video3" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Causal\6.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video4">
+              <video poster="" id="video4" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Causal\7.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video5">
+              <video poster="" id="video5" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Causal\8.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video5">
+              <video poster="" id="video5" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Causal\9.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video5">
+              <video poster="" id="video5" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Causal\10.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video5">
+              <video poster="" id="video5" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Causal\11.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video5">
+              <video poster="" id="video5" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Causal\12.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video5">
+              <video poster="" id="video5" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\TotalvsCausal\Causal\13.mp4" type="video/mp4">
+              </video>
+            </div>
+
+          </div>
+        </div>
+  
+  
+  
+      </div>
+    </section>
+    <!-- End video carousel -->
+  
+
+
+      <!-- Video carousel -->
+  <!-- <section class="hero is-small is-light"> -->
+    <section class="hero is-small  is-light">
+      <div class="hero-body">
+        <h2 class="title is-3 has-text-centered " style="margin-top: 50px; margin-bottom: -20px;">Temperature</h2>
+  
+        <div class="container is-centered has-text-centered  scaled-carousel" >
+          <!-- <div class="hero-body"> -->
+          <h2 class="title is-3">W/O Temperature</h2>
+  
+          <div id="results-carousel11" class="carousel results-carousel " data-bs-ride="carousel" data-interval="16000">
+            <div class="item item-video00">
+              <video poster="" id="video00" autoplay controls muted loop>
+                <!-- Your video file here -->
+                <source src="static\videos\temperature\no_tempetature\1.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video01">
+              <video poster="" id="video01" autoplay controls muted loop>
+                <!-- Your video file here -->
+                <source src="static\videos\temperature\no_tempetature\2.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video02">
+              <video poster="" id="video02" autoplay controls muted loop>
+                <!-- Your video file here -->
+                <source src="static\videos\temperature\no_tempetature\3.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video1">
+              <video poster="" id="video1" autoplay controls muted loop>
+                <!-- Your video file here -->
+                <source src="static\videos\temperature\no_tempetature\4.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video2">
+              <video poster="" id="video2" autoplay controls muted loop>
+                <!-- Your video file here -->
+                <source src="static\videos\temperature\no_tempetature\5.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video3">
+              <video poster="" id="video3" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\temperature\no_tempetature\6.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video4">
+              <video poster="" id="video4" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\temperature\no_tempetature\7.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video5">
+              <video poster="" id="video5" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\temperature\no_tempetature\8.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video5">
+              <video poster="" id="video5" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\temperature\no_tempetature\9.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video5">
+              <video poster="" id="video5" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\temperature\no_tempetature\10.mp4" type="video/mp4">
+              </video>
+            </div>
+
+          </div>
+        </div>
+  
+        <div class="container is-centered has-text-centered  scaled-carousel" >
+          <!-- <div class="hero-body"> -->
+          <h2 class="title is-3">W/ Temperature</h2>
+  
+          <div id="results-carousel11" class="carousel results-carousel " data-bs-ride="carousel" data-interval="16000">
+            <div class="item item-video00">
+              <video poster="" id="video00" autoplay controls muted loop>
+                <!-- Your video file here -->
+                <source src="static\videos\temperature\with_temperature\1.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video01">
+              <video poster="" id="video01" autoplay controls muted loop>
+                <!-- Your video file here -->
+                <source src="static\videos\temperature\with_temperature\2.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video02">
+              <video poster="" id="video02" autoplay controls muted loop>
+                <!-- Your video file here -->
+                <source src="static\videos\temperature\with_temperature\3.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video1">
+              <video poster="" id="video1" autoplay controls muted loop>
+                <!-- Your video file here -->
+                <source src="static\videos\temperature\with_temperature\4.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video2">
+              <video poster="" id="video2" autoplay controls muted loop>
+                <!-- Your video file here -->
+                <source src="static\videos\temperature\with_temperature\5.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video3">
+              <video poster="" id="video3" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\temperature\with_temperature\6.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video4">
+              <video poster="" id="video4" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\temperature\with_temperature\7.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video5">
+              <video poster="" id="video5" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\temperature\with_temperature\8.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video5">
+              <video poster="" id="video5" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\temperature\with_temperature\9.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-video5">
+              <video poster="" id="video5" autoplay controls muted loop>\
+                <!-- Your video file here -->
+                <source src="static\videos\temperature\with_temperature\10.mp4" type="video/mp4">
+              </video>
+            </div>
+
+          </div>
+        </div>
+
+  
+      </div>
+    </section>
+    <!-- End video carousel -->
+
+  <script>
+
+    bulmaCarousel.attach('#results-carousel22', {
+      slidesToScroll: 1,
+      slidesToShow: 2,
+      infinite: true,
+      autoplay: false,
+    });
+    bulmaCarousel.attach('#results-carousel33', {
+      slidesToScroll: 1,
+      slidesToShow: 2,
+      infinite: true,
+      autoplay: false,
+    });
+  </script>
+
+
+</body>
+
+</html>
